@@ -12,9 +12,6 @@ import {
 } from "@/components/ui/select";
 import { formatCurrency } from "@/lib/utils";
 
-const imgSrc =
-  "https://content.r9cdn.net/rimg/himg/93/b0/65/ice-113400-63963384_3XL-483522.jpg?width=452&height=400&xhint=1554&yhint=960&crop=true&watermarkheight=28&watermarkpadding=10";
-
 interface HotelItemProps {
   id: number;
   name: string;

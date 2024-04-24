@@ -33,3 +33,7 @@ export function formatCurrency(value: number, currency: string) {
       return `${value}`;
   }
 }
+
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
