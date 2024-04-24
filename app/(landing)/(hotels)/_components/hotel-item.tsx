@@ -10,7 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { formatCurrency } from "@/lib/utils";
+import { useLocalStorage } from "usehooks-ts";
 
 interface HotelItemProps {
   id: number;
@@ -27,6 +34,26 @@ interface HotelItemProps {
 }
 
 function HotelItem(props: HotelItemProps) {
+  const [currency] = useLocalStorage("CURRENCY", "USD");
+  const { taxes_and_fees, competitors } = props;
+
+  const mostExpensive = competitors
+    ? Math.max(...Object.values(competitors), props.price || 0)
+    : props.price || 0;
+
+  const discountRate = competitors
+    ? ((mostExpensive - (props.price || 0)) / mostExpensive) * 100
+    : 0;
+
+  let sortedCompetitors = competitors ? Object.entries(competitors) : null;
+  sortedCompetitors?.sort((a, b) => a[1] - b[1]);
+
+  console.log(sortedCompetitors);
+  const firstCompetitor = sortedCompetitors ? sortedCompetitors[0] : null;
+  const restCompetitors = sortedCompetitors
+    ? sortedCompetitors.slice(1, sortedCompetitors.length)
+    : null;
+
   const createStars = (numStar: number) => {
     var elements = [];
     for (let i = 0; i < numStar; i++) {
@@ -43,7 +70,7 @@ function HotelItem(props: HotelItemProps) {
   };
 
   return (
-    <Card className="w-full mt-4 p-3 flex h-full flex-row">
+    <Card className="w-full mt-4 p-3 flex h-60 flex-row">
       <div className="relative w-64 h-58">
         <Image
           src={props.photo}
@@ -59,32 +86,99 @@ function HotelItem(props: HotelItemProps) {
           <div className="flex flex-row gap-1">{createStars(props.stars)}</div>
 
           <div>
-            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 hover:bg-slate-200">
-              <span>Hotels</span>
-              <span>270$</span>
+            {/* Our booking */}
+            <div className="flex flex-row justify-between mt-2 pt-2 text-sm px-1 h-7 hover:bg-slate-200">
+              <span className="cursor-pointer">
+                <span>Us </span>
+                {discountRate > 0 && (
+                  <span className="underline">
+                    (Save ${discountRate.toFixed(1)}%)
+                  </span>
+                )}
+
+                {taxes_and_fees && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>{"*"}</span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div>
+                          <div className="font-semibold">
+                            Tax & Fees are inclusive:
+                          </div>
+                          <div>
+                            Tax: {formatCurrency(taxes_and_fees.tax, currency)}
+                          </div>
+                          <div>
+                            Hotel fees:{" "}
+                            {formatCurrency(
+                              taxes_and_fees.hotel_fees,
+                              currency
+                            )}
+                          </div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </span>
+
+              <span>
+                <span className="mr-1">
+                  {props.price ? formatCurrency(props.price, currency) : "N/A"}
+                </span>
+                {discountRate > 0 && (
+                  <span className="line-through">
+                    {formatCurrency(mostExpensive, currency)}
+                  </span>
+                )}
+              </span>
             </div>
-            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 mb-2 hover:bg-slate-200">
-              <span>Booking</span>
-              <span>270$</span>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Select>
-                <SelectTrigger id="platform">
-                  <SelectValue placeholder="Expedia and 4 more" />
-                </SelectTrigger>
-                <SelectContent position="popper" className="border-none">
-                  <SelectItem value="expedia">
-                    <div className="w-full flex flex-row justify-between">
-                      <span className="font-semibold">Expedia ($232)</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="agoda">Agoda.com ($232)</SelectItem>
-                  <SelectItem value="hotelscombined">
-                    HotelsCombined ($232)
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+
+            {/* First competitor */}
+            {competitors && firstCompetitor && (
+              <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 mb-2 hover:bg-slate-200">
+                <span>{firstCompetitor[0]}</span>
+                <span>
+                  <span className="mr-1">
+                    {formatCurrency(firstCompetitor[1], currency)}
+                  </span>
+                  {mostExpensive > firstCompetitor[1] && (
+                    <span className="line-through">
+                      {formatCurrency(mostExpensive, currency)}
+                    </span>
+                  )}
+                </span>
+              </div>
+            )}
+
+            {restCompetitors && restCompetitors?.length > 0 && (
+              <div className="flex flex-col space-y-1.5">
+                <Select>
+                  <SelectTrigger id="platform">
+                    <SelectValue placeholder="More.." />
+                  </SelectTrigger>
+                  <SelectContent position="popper" className="border-none">
+                    {restCompetitors?.map((item, id) => (
+                      <SelectItem key={id} value={item[0]}>
+                        <span>
+                          {item[0]} ({formatCurrency(item[1], currency)}
+                          {mostExpensive > item[1] ? (
+                            <span className="line-through ml-1">
+                              {" "}
+                              {formatCurrency(mostExpensive, currency)})
+                            </span>
+                          ) : (
+                            ")"
+                          )}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
         </form>
       </CardContent>
@@ -97,7 +191,7 @@ function HotelItem(props: HotelItemProps) {
             <span className="text-sm">{hotelRating(props.rating)}</span>
           </div>
           <div className="text-2xl font-bold mt-2">
-            {formatCurrency(props.price || 0, props.currency)}
+            {props.price ? formatCurrency(props.price, props.currency) : "N/A"}
           </div>
         </div>
 

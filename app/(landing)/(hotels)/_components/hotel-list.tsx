@@ -26,7 +26,7 @@ function HotelList({ currency }: HotelListProps) {
   });
 
   const { data: pricesData } = useQuery<Hotel[]>({
-    queryKey: ["hotels-prices"],
+    queryKey: ["hotels-prices", currency],
     queryFn: () => getHotelPrices(currency),
   });
 
@@ -34,9 +34,20 @@ function HotelList({ currency }: HotelListProps) {
     return pricesData?.find((hotelPrice) => hotelPrice.id === hotelId);
   };
 
+  // Push unavailable price hotels to the bottom
+  const availPriceHotels = hotelData?.filter((hotel) =>
+    getHotelPrice(hotel.id)
+  );
+  const naPriceHotels = hotelData?.filter((hotel) => !getHotelPrice(hotel.id));
+
+  let finalData = availPriceHotels ? availPriceHotels : [];
+  if (naPriceHotels) {
+    finalData = [...finalData, ...naPriceHotels];
+  }
+
   return (
     <div>
-      {hotelData?.map((hotel, id) => (
+      {finalData?.map((hotel, id) => (
         <HotelItem
           key={hotel.id}
           currency={currency}

@@ -16,13 +16,13 @@ function numberWithCommas(x: number) {
 export function formatCurrency(value: number, currency: string) {
   let val = "";
   if (["USD", "SGD", "CNY"].includes(currency)) {
-    val = Math.floor(value).toString();
+    val = numberWithCommas(Math.floor(value));
   } else {
     val = numberWithCommas(roundToNearest100(value));
   }
   switch (currency) {
     case "USD":
-      return `USD ${val}`;
+      return `$${val}`;
     case "SGD":
       return `S$${val}`;
     case "CNY":
@@ -30,7 +30,7 @@ export function formatCurrency(value: number, currency: string) {
     case "KRW":
       return `₩${val}`;
     default:
-      return `${value}`;
+      return `$${val}`;
   }
 }
 

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 function SearchBox() {
   return (
-    <form className="mx-auto">
+    <form className="mx-auto" onSubmit={(e) => e.preventDefault()}>
       <div className="relative">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
@@ -29,7 +29,7 @@ function SearchBox() {
           className="w-full h-14 ps-10 text-gray-900"
           required
         />
-        <Button type="submit" variant="search" className="absolute">
+        <Button type="submit" variant="search" className="absolute bg-teal-700">
           Search
         </Button>
       </div>
