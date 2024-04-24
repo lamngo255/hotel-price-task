@@ -46,27 +46,29 @@ function HotelItem() {
           </div>
 
           <div>
-            <div className="flex flex-row justify-between mt-2 text-sm px-1 h-6 border-b">
+            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 border-b hover:bg-slate-200">
               <span>Hotels</span>
               <span>270$</span>
             </div>
-            <div className="flex flex-row justify-between mt-2 text-sm px-1 h-6 border-b mb-2">
+            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 border-b mb-2 hover:bg-slate-200">
               <span>Booking</span>
               <span>270$</span>
             </div>
             <div className="flex flex-col space-y-1.5">
               <Select>
-                <SelectTrigger id="framework">
+                <SelectTrigger id="platform">
                   <SelectValue placeholder="Expedia and 4 more" />
                 </SelectTrigger>
                 <SelectContent position="popper" className="border-none">
-                  <SelectItem value="next">
+                  <SelectItem value="expedia">
                     <div className="w-full flex flex-row justify-between">
                       <span className="font-semibold">Expedia ($232)</span>
                     </div>
                   </SelectItem>
-                  <SelectItem value="sveltekit">Agoda.com ($232)</SelectItem>
-                  <SelectItem value="astro">HotelsCombined ($232)</SelectItem>
+                  <SelectItem value="agoda">Agoda.com ($232)</SelectItem>
+                  <SelectItem value="hotelscombined">
+                    HotelsCombined ($232)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
