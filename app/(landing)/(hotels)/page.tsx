@@ -31,7 +31,7 @@ function HotelPage() {
   };
 
   return (
-    <div className="w-[750px] h-[265px]">
+    <div className="w-[800px] h-[265px]">
       <CurrencyPicker onCurrencyChange={setCurrency} />
       {/* <SearchBox /> */}
       {hotels?.map((hotel, id) => (

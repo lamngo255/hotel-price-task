@@ -47,7 +47,7 @@ function HotelItem(props: HotelItemProps) {
 
   return (
     <Card className="w-full mt-4 p-3 flex h-full flex-row">
-      <div className="relative w-72 h-58">
+      <div className="relative w-64 h-58">
         <Image
           src={props.photo}
           alt="Hotel"
@@ -62,11 +62,11 @@ function HotelItem(props: HotelItemProps) {
           <div className="flex flex-row gap-1">{createStars(props.stars)}</div>
 
           <div>
-            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 border-b hover:bg-slate-200">
+            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 hover:bg-slate-200">
               <span>Hotels</span>
               <span>270$</span>
             </div>
-            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 border-b mb-2 hover:bg-slate-200">
+            <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 mb-2 hover:bg-slate-200">
               <span>Booking</span>
               <span>270$</span>
             </div>
@@ -91,7 +91,7 @@ function HotelItem(props: HotelItemProps) {
           </div>
         </form>
       </CardContent>
-      <CardContent className="p-2 flex flex-col w-40 h-auto border rounded-md pt-2 justify-between">
+      <CardContent className="p-2 flex flex-col w-44 h-auto border rounded-md pt-2 justify-between">
         <div>
           <div className="flex flex-row mt-3">
             <span className="bg-green-700 text-sm text-white px-1 rounded-md mr-1">
