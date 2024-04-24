@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "price": 134434.8,
+    "competitors": {
+      "Booking.com": 135154.89,
+      "Hotels.com": 135486.56,
+      "Expedia": 134989.05,
+      "getaroom": 137642.4,
+      "AMOMA.com": 149250.8
+    }
+  },
+  {
+    "id": 2,
+    "price": 942163.89
+  },
+  {
+    "id": 3,
+    "price": 801007.35,
+    "competitors": {
+      "Expedia": 812604.25,
+      "Prestigia": 663419.79
+    }
+  },
+  {
+    "id": 4,
+    "price": 173644.95
+  },
+  {
+    "id": 5,
+    "price": 135555.09,
+    "competitors": {
+      "Prestigia": 137642.4,
+      "Kayak": 156796.25
+    }
+  },
+  {
+    "id": 6,
+    "price": 106427.55,
+    "competitors": {
+      "Prestigia": 132667.37,
+      "Booking.com": 116083.95
+    }
+  },
+  {
+    "id": 7,
+    "price": 137795.67
+  },
+  {
+    "id": 8,
+    "price": 137795.67
+  }
+]

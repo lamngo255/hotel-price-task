@@ -17,7 +17,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { formatCurrency } from "@/lib/utils";
-import { useLocalStorage } from "usehooks-ts";
 
 interface HotelItemProps {
   id: number;
@@ -34,8 +33,7 @@ interface HotelItemProps {
 }
 
 function HotelItem(props: HotelItemProps) {
-  const [currency] = useLocalStorage("CURRENCY", "USD");
-  const { taxes_and_fees, competitors } = props;
+  const { taxes_and_fees, competitors, currency } = props;
 
   const mostExpensive = competitors
     ? Math.max(...Object.values(competitors), props.price || 0)
@@ -48,7 +46,6 @@ function HotelItem(props: HotelItemProps) {
   let sortedCompetitors = competitors ? Object.entries(competitors) : null;
   sortedCompetitors?.sort((a, b) => a[1] - b[1]);
 
-  console.log(sortedCompetitors);
   const firstCompetitor = sortedCompetitors ? sortedCompetitors[0] : null;
   const restCompetitors = sortedCompetitors
     ? sortedCompetitors.slice(1, sortedCompetitors.length)
@@ -57,7 +54,7 @@ function HotelItem(props: HotelItemProps) {
   const createStars = (numStar: number) => {
     var elements = [];
     for (let i = 0; i < numStar; i++) {
-      elements.push(<IoIosStar />);
+      elements.push(<IoIosStar key={i} />);
     }
     return elements;
   };
@@ -103,7 +100,7 @@ function HotelItem(props: HotelItemProps) {
                         <span>{"*"}</span>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <div>
+                        <div data-testid="tooltip">
                           <div className="font-semibold">
                             Tax & Fees are inclusive:
                           </div>
@@ -159,7 +156,11 @@ function HotelItem(props: HotelItemProps) {
                   <SelectTrigger id="platform">
                     <SelectValue placeholder="More.." />
                   </SelectTrigger>
-                  <SelectContent position="popper" className="border-none">
+                  <SelectContent
+                    position="popper"
+                    className="border-none"
+                    data-testid="competitors"
+                  >
                     {restCompetitors?.map((item, id) => (
                       <SelectItem key={id} value={item[0]}>
                         <span>
@@ -190,7 +191,7 @@ function HotelItem(props: HotelItemProps) {
             </span>
             <span className="text-sm">{hotelRating(props.rating)}</span>
           </div>
-          <div className="text-2xl font-bold mt-2">
+          <div className="text-2xl font-bold mt-2" data-testid="price">
             {props.price ? formatCurrency(props.price, props.currency) : "N/A"}
           </div>
         </div>
