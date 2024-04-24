@@ -6,19 +6,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLocalStorage } from "usehooks-ts";
 
-function CurrencyPicker() {
+interface CurrencyPickerProps {
+  onCurrencyChange: (val: string) => void;
+}
+
+function CurrencyPicker({ onCurrencyChange }: CurrencyPickerProps) {
+  const [currency] = useLocalStorage("CURRENCY", "USD");
+
   return (
     <div className="flex flex-col w-32 mb-3">
-      <Select defaultValue="usd">
+      <Select defaultValue={currency} onValueChange={onCurrencyChange}>
         <SelectTrigger id="currency">
           <SelectValue placeholder="Currency" />
         </SelectTrigger>
         <SelectContent position="popper" className="border-none">
-          <SelectItem value="usd">USD</SelectItem>
-          <SelectItem value="sgd">SGD</SelectItem>
-          <SelectItem value="cny">CNY</SelectItem>
-          <SelectItem value="krw">KRW</SelectItem>
+          <SelectItem value="USD">USD</SelectItem>
+          <SelectItem value="SGD">SGD</SelectItem>
+          <SelectItem value="CNY">CNY</SelectItem>
+          <SelectItem value="KRW">KRW</SelectItem>
         </SelectContent>
       </Select>
     </div>

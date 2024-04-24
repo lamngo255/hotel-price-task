@@ -10,40 +10,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatCurrency } from "@/lib/utils";
 
 const imgSrc =
   "https://content.r9cdn.net/rimg/himg/93/b0/65/ice-113400-63963384_3XL-483522.jpg?width=452&height=400&xhint=1554&yhint=960&crop=true&watermarkheight=28&watermarkpadding=10";
 
-function HotelItem() {
+interface HotelItemProps {
+  id: number;
+  name: string;
+  rating: number;
+  stars: number;
+  address: string;
+  photo: string;
+  description: string;
+  currency: string;
+  price?: number;
+  competitors?: Record<string, number>;
+  taxes_and_fees?: Record<string, number>;
+}
+
+function HotelItem(props: HotelItemProps) {
+  const createStars = (numStar: number) => {
+    var elements = [];
+    for (let i = 0; i < numStar; i++) {
+      elements.push(<IoIosStar />);
+    }
+    return elements;
+  };
+
+  const hotelRating = (rating: number) => {
+    if (7 <= rating && rating < 8) return "Good";
+    if (8 <= rating && rating < 9) return "Fabulous";
+    if (rating >= 9) return "Exceptional";
+    return "Normal";
+  };
+
   return (
     <Card className="w-full mt-4 p-3 flex h-full flex-row">
-      <div className="relative w-60 h-58">
+      <div className="relative w-72 h-58">
         <Image
-          src={imgSrc}
+          src={props.photo}
           alt="Hotel"
           fill
           className="w-full h-auto rounded-md"
         />
       </div>
 
-      <CardContent className="-ml-3 h-full">
+      <CardContent className="-ml-3 h-full w-96">
         <form>
-          <label className="text-big font-semibold">
-            Crowne Plaza Changi Airport
-          </label>
-          <div className="flex flex-row gap-1">
-            <IoIosStar />
-            <IoIosStar />
-            <IoIosStar />
-            <IoIosStar />
-            <IoIosStar />
-          </div>
-          <div className="flex flex-row mt-3">
-            <span className="bg-green-700 text-white px-1 rounded-md mr-2">
-              8.7
-            </span>
-            <span className="text-md">Excellence (200)</span>
-          </div>
+          <label className="text-big font-semibold">{props.name}</label>
+          <div className="flex flex-row gap-1">{createStars(props.stars)}</div>
 
           <div>
             <div className="flex flex-row justify-between pt-2 text-sm px-1 h-7 border-b hover:bg-slate-200">
@@ -77,12 +93,23 @@ function HotelItem() {
       </CardContent>
       <CardContent className="p-2 flex flex-col w-40 h-auto border rounded-md pt-2 justify-between">
         <div>
-          <div className="font-semibold">Best Deal</div>
-          <div className="text-2xl font-bold">$232</div>
+          <div className="flex flex-row mt-3">
+            <span className="bg-green-700 text-sm text-white px-1 rounded-md mr-1">
+              {props.rating}
+            </span>
+            <span className="text-sm">{hotelRating(props.rating)}</span>
+          </div>
+          <div className="text-2xl font-bold mt-2">
+            {formatCurrency(props.price || 0, props.currency)}
+          </div>
         </div>
 
-        <Button type="submit" variant="default" className="bg-teal-700">
-          View Deal
+        <Button
+          type="submit"
+          variant="default"
+          className="bg-teal-700 font-semibold"
+        >
+          Book!
         </Button>
       </CardContent>
     </Card>
