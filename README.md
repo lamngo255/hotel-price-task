@@ -10,7 +10,8 @@ yarn dev
 
 # for testing
 yarn test
+yarn test:coverage
 ```
 
-To switch between sandbox & local environment, we can configure MY_ENV in next.config.mjs file.
-Sandbox environment will use data from local json file, while local environment will use api endpoints.
+- To switch between sandbox & local environment, we can configure **MY_ENV** in `next.config.mjs` file.
+- Sandbox environment will use data from local json file, while local environment will use api endpoints.
