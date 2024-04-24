@@ -1,7 +1,7 @@
-import { Hotel, HotelPrices } from "@/types";
+import { Hotel } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "@/components/spinner";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import HotelItem from "./hotel-item";
 import hotels from "@/config/hotels.json";
 import USD from "@/config/USD.json";
